@@ -21,7 +21,7 @@ class DriveFolder:
     def list(self, mimetype=None):
         try:
             page_token = None
-            if mimetype is not None:
+            if mimetype is None:
                 mimetype_filter = ''
             else:
                 mimetype_filter = f"and mimeType='{mimetype}'"
@@ -56,7 +56,10 @@ class DriveFolder:
         file = self.service.files().create(body=file_metadata,  # 'image/jpeg'
                                            media_body=media,
                                            fields='id').execute()
-        print('File ID: %s' % file.get('id'))
+        file_id = file.get('id')
+        print('File ID: %s' % file_id)
+
+        return file_id
 
     def download(self, file_id, local_path):
         request = self.service.files().get_media(fileId=file_id)
