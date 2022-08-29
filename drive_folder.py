@@ -6,6 +6,7 @@ import os
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient import errors
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
@@ -83,6 +84,12 @@ class DriveFolder:
         print('Folder ID: %s' % subfolder_id)
 
         return subfolder_id
+
+    def delete(self, file_id):
+        try:
+            self.service.files().delete(fileId=file_id).execute()
+        except errors.HttpError as error:
+            print('An error occurred: %s' % error)
 
 
 if __name__ == '__main__':
