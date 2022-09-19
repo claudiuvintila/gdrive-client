@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import io
+import pathlib
 import os
 
 from google.auth.transport.requests import Request
@@ -47,6 +47,8 @@ class DriveFolder:
             print(f'An error occurred: {error}')
 
     def upload(self, path, filename=None, mimetype=None):
+        if type(path) == pathlib.PosixPath:
+            path = str(path)
         if filename is None:
             filename = os.path.basename(path)
         file_metadata = {
